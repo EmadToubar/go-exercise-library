@@ -191,7 +191,7 @@ func main() {
 		fmt.Println("Please input the ISBN of the book: ")
 		fmt.Scan(&isbn_check)
 		db.Query("UPDATE book SET status=false WHERE isbn=($1)", isbn_check)
-		println("Book loaned.")
+		println("Book returned.")
 	case 12:
 		//Quitting system
 		os.Exit(1)
