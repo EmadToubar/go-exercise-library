@@ -8,12 +8,16 @@ import (
 	"librarydatabase/db"
 	"librarydatabase/models"
 	"librarydatabase/printer"
+	"librarydatabase/repositories"
+	"librarydatabase/services"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
 	ctx := db.InitDb()
+	pr := repositories.CreatePersonRepo(ctx)
+	ps := services.NewPersonService(pr)
 	option := 0
 	printer.Menu()           //Print out the menu
 	fmt.Scanf("%v", &option) //User input for options
@@ -21,15 +25,7 @@ func main() {
 		switch option {
 		case 1:
 			//Registering new borrower
-			firstname := ""
-			lastname := ""
-			email := ""
-			fmt.Println("Please insert your first name, last name, and email: ")
-			fmt.Scan(&firstname, &lastname, &email)
-			tx := ctx.MustBegin()
-			tx.MustExec("INSERT INTO person (first_name, last_name, email) VALUES ($1, $2, $3)", firstname, lastname, email)
-			tx.Commit()
-			println("User created.")
+			ps.AddPerson()
 		case 2:
 			//Adding new book
 			title := ""
